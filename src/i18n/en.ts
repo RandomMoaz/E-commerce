@@ -17,6 +17,10 @@ export const en = {
   "lang.switchLabel": "Switch to Arabic",
   "lang.switchName": "العربية",
 
+  // ---------- Theme switcher ----------
+  "theme.toDark": "Switch to dark mode",
+  "theme.toLight": "Switch to light mode",
+
   // ---------- Navigation ----------
   "nav.toggleMenu": "Toggle menu",
   "nav.home": "Home",

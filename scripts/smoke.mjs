@@ -77,16 +77,19 @@ const browser = await chromium.launch();
 const ignorable = (t) =>
   /ERR_|Failed to load resource|fonts\.g|images\.unsplash|lottie/i.test(t);
 
-async function shot(path, name, width, height, after, locale = "en") {
+async function shot(path, name, width, height, after, locale = "en", theme = "light") {
   const ctx = await browser.newContext({ viewport: { width, height } });
-  // Seed the saved language before any app code runs, so the page boots
-  // straight into the locale under test.
+  // Seed the saved language and theme before any app code runs, so the page
+  // boots straight into the combination under test.
   await ctx.addInitScript(
-    (loc) => localStorage.setItem("shopwave.locale", loc),
-    locale
+    ([loc, th]) => {
+      localStorage.setItem("shopwave.locale", loc);
+      localStorage.setItem("theme", th);
+    },
+    [locale, theme]
   );
   const page = await ctx.newPage();
-  const where = `${path} [${locale}]`;
+  const where = `${path} [${locale}/${theme}]`;
   page.on("console", (m) => {
     if (m.type() === "error" && !ignorable(m.text()))
       appErrors.push(`[console] ${where} — ${m.text()}`);
@@ -110,6 +113,23 @@ async function shot(path, name, width, height, after, locale = "en") {
     const body = await page.evaluate(() => document.body.innerText);
     if (!/[؀-ۿ]/.test(body))
       appErrors.push(`[i18n] ${where} — no Arabic characters rendered`);
+  }
+
+  // The theme attribute must be set, and the palette must actually have taken
+  // effect — a missing token block would leave the page light under dark mode.
+  const { themeAttr, bodyBg } = await page.evaluate(() => ({
+    themeAttr: document.documentElement.dataset.theme,
+    bodyBg: getComputedStyle(document.body).backgroundColor,
+  }));
+  if (themeAttr !== theme)
+    appErrors.push(`[theme] ${where} — expected data-theme="${theme}", got "${themeAttr}"`);
+  const rgb = (bodyBg.match(/\d+/g) || []).slice(0, 3).map(Number);
+  const luma = rgb.length === 3 ? (0.299 * rgb[0] + 0.587 * rgb[1] + 0.114 * rgb[2]) / 255 : null;
+  if (luma !== null) {
+    if (theme === "dark" && luma > 0.25)
+      appErrors.push(`[theme] ${where} — dark mode but body is light (${bodyBg})`);
+    if (theme === "light" && luma < 0.75)
+      appErrors.push(`[theme] ${where} — light mode but body is dark (${bodyBg})`);
   }
 
   // Nothing may overflow the viewport horizontally.
@@ -154,20 +174,23 @@ const openQuickView = async (page, label) => {
   }
 };
 
-for (const locale of ["en", "ar"]) {
-  const suffix = locale === "en" ? "" : "-ar";
-  for (const [path, name, w, h] of routes) {
-    await shot(path, name + suffix, w, h, undefined, locale);
+for (const theme of ["light", "dark"]) {
+  for (const locale of ["en", "ar"]) {
+    const suffix = `${locale === "en" ? "" : "-ar"}${theme === "light" ? "" : "-dark"}`;
+    for (const [path, name, w, h] of routes) {
+      await shot(path, name + suffix, w, h, undefined, locale, theme);
+    }
+    await shot(
+      "/shop",
+      `quickview${suffix}`,
+      1280,
+      1000,
+      (page) => openQuickView(page, locale === "ar" ? "عرض سريع" : "Quick view"),
+      locale,
+      theme
+    );
+    await shot("/shop", `cart-filled${suffix}`, 1280, 1000, fillCart, locale, theme);
   }
-  await shot(
-    "/shop",
-    `quickview${suffix}`,
-    1280,
-    1000,
-    (page) => openQuickView(page, locale === "ar" ? "عرض سريع" : "Quick view"),
-    locale
-  );
-  await shot("/shop", `cart-filled${suffix}`, 1280, 1000, fillCart, locale);
 }
 
 await browser.close();

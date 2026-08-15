@@ -16,6 +16,10 @@ export const ar: Dictionary = {
   "lang.switchLabel": "التبديل إلى الإنجليزية",
   "lang.switchName": "English",
 
+  // ---------- Theme switcher ----------
+  "theme.toDark": "التبديل إلى الوضع الداكن",
+  "theme.toLight": "التبديل إلى الوضع الفاتح",
+
   // ---------- Navigation ----------
   "nav.toggleMenu": "فتح القائمة",
   "nav.home": "الرئيسية",

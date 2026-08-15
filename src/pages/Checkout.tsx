@@ -38,8 +38,7 @@ export default function Checkout() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Generated per order, not once per mount, so a second order in the same
-    // session gets its own number.
+ 
     setOrderId(newOrderId());
     setPlaced(true);
     clearCart();

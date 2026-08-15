@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate, useSearchParams } from "react-router-dom";
 import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { useLocale } from "../context/LocaleContext";
+import { useTheme } from "../context/ThemeContext";
 import type { TranslationKey } from "../i18n";
 
 const links: { to: string; labelKey: TranslationKey; end?: boolean }[] = [
@@ -17,6 +18,7 @@ export default function Navbar() {
   const { count } = useCart();
   const { count: wishCount } = useWishlist();
   const { t, toggleLocale } = useLocale();
+  const { isDark, toggle } = useTheme();
   const [open, setOpen] = useState(false);
   const [params] = useSearchParams();
   const urlQuery = params.get("q") ?? "";
@@ -46,22 +48,52 @@ export default function Navbar() {
           <p>
             {t("announce.text")} <Link to="/shop">{t("announce.cta")}</Link>
           </p>
-          <button
-            type="button"
-            className="announce__lang"
-            onClick={toggleLocale}
-            aria-label={t("lang.switchLabel")}
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.7" />
-              <path
-                d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"
-                stroke="currentColor"
-                strokeWidth="1.7"
-              />
-            </svg>
-            {t("lang.switchName")}
-          </button>
+          <div className="announce__actions">
+            <button
+              type="button"
+              className="announce__btn"
+              onClick={toggle}
+              aria-label={t(isDark ? "theme.toLight" : "theme.toDark")}
+              aria-pressed={isDark}
+            >
+              {isDark ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="1.7" />
+                  <path
+                    d="M12 2.5v2.2M12 19.3v2.2M21.5 12h-2.2M4.7 12H2.5M18.7 5.3l-1.6 1.6M6.9 17.1l-1.6 1.6M18.7 18.7l-1.6-1.6M6.9 6.9 5.3 5.3"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path
+                    d="M20.5 14.7A8.5 8.5 0 0 1 9.3 3.5a8.5 8.5 0 1 0 11.2 11.2Z"
+                    stroke="currentColor"
+                    strokeWidth="1.7"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              )}
+            </button>
+            <button
+              type="button"
+              className="announce__btn"
+              onClick={toggleLocale}
+              aria-label={t("lang.switchLabel")}
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.7" />
+                <path
+                  d="M3 12h18M12 3c2.5 2.7 2.5 15.3 0 18M12 3c-2.5 2.7-2.5 15.3 0 18"
+                  stroke="currentColor"
+                  strokeWidth="1.7"
+                />
+              </svg>
+              {t("lang.switchName")}
+            </button>
+          </div>
         </div>
       </div>
 
