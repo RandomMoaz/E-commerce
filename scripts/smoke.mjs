@@ -1,11 +1,3 @@
-/**
- * Headless smoke test: serves ./dist with an SPA fallback, walks every page at
- * desktop and mobile widths, and fails if any app-level console/page error
- * fires. Screenshots land in ./screenshots.
- *
- * Usage:  npm run build && npm run smoke
- * Needs:  npm install -D playwright  (then: npx playwright install chromium)
- */
 import { createServer } from "node:http";
 import { readFile, mkdir, access } from "node:fs/promises";
 import { extname, join, normalize, dirname } from "node:path";

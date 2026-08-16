@@ -27,6 +27,7 @@ export default function Navbar() {
   const navigate = useNavigate();
 
   
+  const [syncedQuery, setSyncedQuery] = useState(urlQuery);
   if (urlQuery !== syncedQuery) {
     setSyncedQuery(urlQuery);
     setQuery(urlQuery);
