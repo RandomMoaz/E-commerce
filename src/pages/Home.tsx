@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import Hero from "../components/Hero";
 import ProductCard from "../components/ProductCard";
-import { categories, products } from "../data/products";
+import { products } from "../data/products";
+import CategoryShowcase from "../components/CategoryShowcase";
 import { useLocale } from "../context/LocaleContext";
 import { useDocumentTitle } from "../lib/useDocumentTitle";
 import type { TranslationKey } from "../i18n";
@@ -39,19 +40,7 @@ export default function Home() {
             {t("action.viewAll")} {arrow}
           </Link>
         </div>
-        <div className="cat-grid">
-          {categories.map((c) => (
-            <Link
-              key={c.name}
-              to={`/shop?category=${c.name}`}
-              className="cat-card"
-              style={{ background: `linear-gradient(140deg, ${c.colors[0]}, ${c.colors[1]})` }}
-            >
-              <span className="cat-card__name">{t(`category.${c.name}`)}</span>
-              <span className="cat-card__blurb">{t(`category.${c.name}.blurb`)}</span>
-            </Link>
-          ))}
-        </div>
+        <CategoryShowcase />
       </section>
 
       <section className="section container">

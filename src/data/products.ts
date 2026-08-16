@@ -1,15 +1,50 @@
 import type { Category, Product } from "../types";
 
-export const categories: { name: Category; blurb: string; colors: [string, string] }[] = [
-  { name: "Electronics", blurb: "Gadgets & audio", colors: ["#DB4444", "#ff6b6b"] },
-  { name: "Fashion", blurb: "Wear the season", colors: ["#1f2937", "#4b5563"] },
-  { name: "Home", blurb: "Comfort & decor", colors: ["#0ea5a0", "#4fe0c9"] },
-  { name: "Beauty", blurb: "Glow essentials", colors: ["#db2777", "#f472b6"] },
-  { name: "Sports", blurb: "Move more", colors: ["#2563eb", "#60a5fa"] },
+export interface CategoryEntry {
+  name: Category;
+  blurb: string;
+  colors: [string, string];
+  /
+  image: string;
+}
+
+
+const catImg = (id: string) =>
+  `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1100&q=80`;
+
+export const categories: CategoryEntry[] = [
+  {
+    name: "Electronics",
+    blurb: "Gadgets & audio",
+    colors: ["#DB4444", "#ff6b6b"],
+    image: catImg("photo-1498049794561-7780e7231661"),
+  },
+  {
+    name: "Fashion",
+    blurb: "Wear the season",
+    colors: ["#1f2937", "#4b5563"],
+    image: catImg("photo-1445205170230-053b83016050"),
+  },
+  {
+    name: "Home",
+    blurb: "Comfort & decor",
+    colors: ["#0ea5a0", "#4fe0c9"],
+    image: catImg("photo-1616486338812-3dadae4b4ace"),
+  },
+  {
+    name: "Beauty",
+    blurb: "Glow essentials",
+    colors: ["#db2777", "#f472b6"],
+    image: catImg("photo-1596462502278-27bfdc403348"),
+  },
+  {
+    name: "Sports",
+    blurb: "Move more",
+    colors: ["#2563eb", "#60a5fa"],
+    image: catImg("photo-1517836357463-d25dfeac3438"),
+  },
 ];
 
-/** Unsplash photos load on the user's machine; ProductImage falls back to the
- *  gradient art automatically if any URL fails, so the UI never breaks. */
 const img = (id: string) =>
   `https://images.unsplash.com/${id}?auto=format&fit=crop&w=700&q=80`;
 

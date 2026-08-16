@@ -533,19 +533,50 @@ button {
 .cat-card {
   position: relative;
   border-radius: var(--radius);
-  padding: 20px;
-  min-height: 120px;
+  min-height: 168px;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
+  align-items: flex-end;
   color: #fff;
   overflow: hidden;
+  background: var(--ink-2);
   box-shadow: var(--shadow-sm);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .cat-card:hover {
   transform: translateY(-3px);
   box-shadow: var(--shadow);
+}
+.cat-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+.cat-card:hover .cat-art {
+  transform: scale(1.06);
+}
+/* Scrim so the label stays legible over any photo. */
+.cat-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(8, 8, 12, 0.82) 0%,
+    rgba(8, 8, 12, 0.42) 42%,
+    rgba(8, 8, 12, 0.05) 100%
+  );
+}
+.cat-card__body {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 18px;
+  width: 100%;
 }
 .cat-card__name {
   font-family: var(--font-display);
@@ -555,6 +586,49 @@ button {
 .cat-card__blurb {
   font-size: 0.84rem;
   opacity: 0.92;
+}
+.cat-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+.cat-card__count {
+  font-size: 0.76rem;
+  font-weight: 600;
+  opacity: 0.85;
+}
+/* Circular affordance that fills with brand red on hover. */
+.cat-card__go {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.16);
+  backdrop-filter: blur(4px);
+  font-size: 0.95rem;
+  transform: translateY(4px);
+  opacity: 0;
+  transition: opacity 0.25s ease, transform 0.25s ease, background 0.25s ease;
+}
+.cat-card:hover .cat-card__go,
+.cat-card:focus-visible .cat-card__go {
+  opacity: 1;
+  transform: translateY(0);
+  background: var(--red);
+}
+.cat-card:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 3px;
+}
+
+/* Narrow: the feature runs full width as a banner, leaving the other four in a
+   tidy 2x2 below. */
+.cat-card--feature {
+  grid-column: span 2;
+  min-height: 200px;
 }
 
 /* ---------- Product grid & card ---------- */
@@ -1813,9 +1887,8 @@ button {
   .product-grid {
     grid-template-columns: repeat(3, 1fr);
   }
-  .cat-grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
+  /* .cat-grid stays at 2 columns until 900px, where the feature tile becomes
+     a 2x2 block — 4 columns then divide exactly across the five categories. */
   .stats-grid {
     grid-template-columns: repeat(4, 1fr);
   }
@@ -1866,8 +1939,23 @@ button {
   .hero__lottie {
     width: min(420px, 40vw);
   }
+  /* Four tracks + a 2x2 feature fills exactly two rows with five categories. */
   .cat-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .cat-card--feature {
+    grid-column: span 2;
+    grid-row: span 2;
+  }
+  .cat-card--feature .cat-card__name {
+    font-size: 1.7rem;
+  }
+  .cat-card--feature .cat-card__blurb {
+    font-size: 0.95rem;
+  }
+  .cat-card--feature .cat-card__body {
+    padding: 24px;
   }
   .product-grid {
     grid-template-columns: repeat(4, 1fr);
