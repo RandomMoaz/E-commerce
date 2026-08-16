@@ -1614,13 +1614,46 @@ button {
 .footer__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 30px;
-  padding: 48px 20px 32px;
+  gap: 36px 28px;
+  padding: 56px 20px 40px;
+}
+/* Pair the link lists as soon as two fit — three stacked lists make the mobile
+   footer needlessly long. Brand and newsletter always span the full width
+   until the wide layout, since they hold prose and a form, not links. */
+@media (min-width: 380px) {
+  .footer__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .footer__brand,
+  .footer__newsletter {
+    grid-column: 1 / -1;
+  }
+}
+@media (min-width: 600px) {
+  .footer__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+/* Full five-track row: brand, three link columns, newsletter. */
+@media (min-width: 1000px) {
+  .footer__grid {
+    grid-template-columns: 1.7fr 1fr 1fr 1fr 1.9fr;
+    gap: 40px 32px;
+  }
+  .footer__brand,
+  .footer__newsletter {
+    grid-column: auto;
+  }
 }
 .footer h4 {
   color: #fff;
   font-size: 0.95rem;
   margin-bottom: 14px;
+}
+.footer__logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
 }
 .footer__brand .brand__name {
   color: #fff;
@@ -1628,10 +1661,32 @@ button {
   font-weight: 800;
   font-size: 1.3rem;
 }
-.footer__brand p {
-  margin: 12px 0 16px;
+.footer__blurb {
+  margin: 14px 0 18px;
   font-size: 0.9rem;
   max-width: 34ch;
+  line-height: 1.65;
+}
+.footer__contact {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 20px;
+  display: grid;
+  gap: 10px;
+  font-size: 0.88rem;
+}
+.footer__contact li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.footer__contact svg {
+  flex: none;
+  color: var(--red);
+}
+.footer__contact a:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 .footer__social {
   display: flex;
@@ -1644,12 +1699,16 @@ button {
   background: rgba(255, 255, 255, 0.08);
   display: grid;
   place-items: center;
-  font-weight: 700;
   color: #fff;
-  transition: background 0.2s ease;
+  transition: background 0.2s ease, transform 0.2s ease;
 }
 .footer__social-btn:hover {
   background: var(--red);
+  transform: translateY(-2px);
+}
+.footer__social-btn:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 2px;
 }
 .footer__col {
   display: flex;
@@ -1685,15 +1744,66 @@ button {
 .footer__form input::placeholder {
   color: #9092a0;
 }
-.footer__bar {
+.footer__form input:focus {
+  border-color: var(--red);
+}
+/* Always present so the confirmation does not shift the payment row. */
+.footer__form-ok {
+  min-height: 1.3em;
+  margin: 8px 0 0;
+  font-size: 0.84rem;
+  color: #7ee0a8;
+}
+.footer__pay {
+  margin-top: 22px;
+}
+.footer__pay-label {
+  display: block;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #8b8d9c;
+  margin-bottom: 10px;
+}
+.footer__pay ul {
+  list-style: none;
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  justify-content: space-between;
-  padding: 18px 20px;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+}
+.footer__pay li {
+  padding: 5px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: #d5d6de;
+  white-space: nowrap;
+}
+.footer__bar {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 0.82rem;
   color: #9092a0;
+}
+.footer__bar-inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+}
+.footer__legal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+}
+.footer__legal a:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 
 /* ============================================================

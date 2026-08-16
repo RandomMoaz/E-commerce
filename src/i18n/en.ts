@@ -295,6 +295,13 @@ export const en = {
   "footer.newsletterText": "Get 10% off your first order and early access to drops.",
   "footer.emailPlaceholder": "Email address",
   "footer.subscribe": "Subscribe",
+  "footer.newsletterOk": "✓ You’re on the list — check your inbox.",
+  "footer.followOn": "ShopWave on {network}",
+  "footer.paymentsLabel": "We accept",
+  "footer.legalLabel": "Legal",
+  "footer.privacy": "Privacy policy",
+  "footer.terms": "Terms of service",
+  "footer.cookies": "Cookie settings",
   "footer.rights": "© {year} ShopWave. All rights reserved.",
   "footer.builtWith": "Built with React, TypeScript & Lottie.",
 

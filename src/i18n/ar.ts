@@ -312,6 +312,13 @@ export const ar: Dictionary = {
   "footer.newsletterText": "احصل على خصم 10% على أول طلب ووصول مبكر للمنتجات الجديدة.",
   "footer.emailPlaceholder": "البريد الإلكتروني",
   "footer.subscribe": "اشتراك",
+  "footer.newsletterOk": "✓ تم اشتراكك — تفقّد بريدك الإلكتروني.",
+  "footer.followOn": "شوب ويف على {network}",
+  "footer.paymentsLabel": "نقبل الدفع عبر",
+  "footer.legalLabel": "الشؤون القانونية",
+  "footer.privacy": "سياسة الخصوصية",
+  "footer.terms": "شروط الخدمة",
+  "footer.cookies": "إعدادات ملفات الارتباط",
   "footer.rights": "© {year} شوب ويف. جميع الحقوق محفوظة.",
   "footer.builtWith": "مبني باستخدام React وTypeScript وLottie.",
 
