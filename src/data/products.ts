@@ -4,7 +4,6 @@ export interface CategoryEntry {
   name: Category;
   blurb: string;
   colors: [string, string];
-  /
   image: string;
 }
 
