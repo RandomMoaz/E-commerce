@@ -1729,8 +1729,16 @@ button {
 }
 
 @media (min-width: 900px) {
-  .nav__links {
-    display: flex;
+  /* .nav__links stays hidden on desktop — GooeyNav renders the desktop row.
+     The list below is the burger dropdown only. */
+
+  /* Clip the gooey filter's oversized backdrop to the header. It extends 75px
+     past the effect so the contrast filter has a uniform base, which otherwise
+     paints over the announcement bar — .nav's backdrop-filter creates a
+     stacking context, so mix-blend-mode never composites against that bar.
+     Safe here only because the burger dropdown is hidden at this width. */
+  .nav {
+    overflow: hidden;
   }
   .nav__search {
     display: flex;

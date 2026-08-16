@@ -4,6 +4,7 @@ import { useCart } from "../context/CartContext";
 import { useWishlist } from "../context/WishlistContext";
 import { useLocale } from "../context/LocaleContext";
 import { useTheme } from "../context/ThemeContext";
+import GooeyNav from "./GooeyNav";
 import type { TranslationKey } from "../i18n";
 
 const links: { to: string; labelKey: TranslationKey; end?: boolean }[] = [
@@ -25,10 +26,7 @@ export default function Navbar() {
   const [query, setQuery] = useState(urlQuery);
   const navigate = useNavigate();
 
-  // Keep the box in step with the URL, so landing on /shop?q=lamp (or using
-  // back/forward) shows the term that produced the results. Adjusted during
-  // render rather than in an effect to avoid a cascading re-render.
-  const [syncedQuery, setSyncedQuery] = useState(urlQuery);
+  
   if (urlQuery !== syncedQuery) {
     setSyncedQuery(urlQuery);
     setQuery(urlQuery);
@@ -132,6 +130,13 @@ export default function Navbar() {
             </span>
             <span className="brand__name">ShopWave</span>
           </Link>
+
+          {/* Desktop: the gooey pill row. Mobile: the plain list below, which
+              doubles as the burger dropdown — the gooey effect measures a
+              horizontal row and does not translate to a stacked menu. */}
+          <GooeyNav
+            items={links.map((l) => ({ to: l.to, label: t(l.labelKey), end: l.end }))}
+          />
 
           <nav className={`nav__links ${open ? "is-open" : ""}`}>
             {links.map((l) => (
